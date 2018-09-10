@@ -1,6 +1,6 @@
-import React from 'react'
+import React from 'react';
 
-import './Person.css'
+import './Person.css';
 
 const person = props => {
   return (
@@ -11,7 +11,7 @@ const person = props => {
       <p>{props.children}</p>
       <input type="text" onChange={props.changed} value={props.name} />
     </div>
-  )
+  );
 };
 
-export default person
+export default person;
