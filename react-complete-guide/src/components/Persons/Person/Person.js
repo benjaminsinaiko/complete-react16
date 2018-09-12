@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import './Person.css';
+import { AuthContext } from '../../../containers/App';
 
 class Person extends Component {
   constructor(props) {
@@ -14,7 +15,6 @@ class Person extends Component {
     if (this.props.position === 0) {
       this.inputElement.current.focus();
     }
-    console.log('props from person', this.props.authenticated);
   }
 
   focus() {
@@ -29,7 +29,9 @@ class Person extends Component {
     };
     return (
       <div className="Person" style={style}>
-        {this.props.authenticated ? <p>I'm authenticated</p> : null}
+        <AuthContext.Consumer>
+          {auth => (auth ? <p>I'm authenticated</p> : null)}
+        </AuthContext.Consumer>
         <p onClick={this.props.click}>
           I'm {this.props.name} and I am {this.props.age} years old!
         </p>

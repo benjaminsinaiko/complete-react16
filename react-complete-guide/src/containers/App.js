@@ -4,6 +4,8 @@ import './App.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 
+export const AuthContext = React.createContext(false);
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -75,7 +77,6 @@ class App extends Component {
             persons={this.state.persons}
             clicked={this.deletePersonHandler}
             changed={this.nameChangedHandler}
-            isAthenticated={this.state.authenticated}
           />
         </div>
       );
@@ -96,7 +97,9 @@ class App extends Component {
           login={this.loginHandler}
           clicked={this.togglePersonsHandler}
         />
-        {persons}
+        <AuthContext.Provider value={this.state.authenticated}>
+          {persons}
+        </AuthContext.Provider>
       </div>
     );
   }
