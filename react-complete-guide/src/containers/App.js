@@ -7,22 +7,23 @@ import Cockpit from '../components/Cockpit/Cockpit';
 class App extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      persons: [
+        { id: 1, name: 'Max', age: 28 },
+        { id: 2, name: 'Manu', age: 29 },
+        { id: 3, name: 'Stephanie', age: 26 }
+      ],
+      otherState: 'some other value',
+      showPersons: false,
+      toggleClicked: 0
+    };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
     console.log('[UPDATE App.js] Inside shouldUpdateComponent()', nextProps);
     return true;
   }
-
-  state = {
-    persons: [
-      { id: 1, name: 'Max', age: 28 },
-      { id: 2, name: 'Manu', age: 29 },
-      { id: 3, name: 'Stephanie', age: 26 }
-    ],
-    otherState: 'some other value',
-    showPersons: false
-  };
 
   nameChangedHandler = (event, id) => {
     const personIndex = this.state.persons.findIndex(p => {
@@ -51,7 +52,12 @@ class App extends Component {
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState({ showPersons: !doesShow });
+    this.setState((prevState, props) => {
+      return {
+        showPersons: !doesShow,
+        toggleClicked: prevState.toggleClicked + 1
+      };
+    });
   };
 
   render() {
