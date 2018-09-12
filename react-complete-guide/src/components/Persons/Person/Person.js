@@ -14,6 +14,7 @@ class Person extends Component {
     if (this.props.position === 0) {
       this.inputElement.current.focus();
     }
+    console.log('props from person', this.props.authenticated);
   }
 
   focus() {
@@ -28,6 +29,7 @@ class Person extends Component {
     };
     return (
       <div className="Person" style={style}>
+        {this.props.authenticated ? <p>I'm authenticated</p> : null}
         <p onClick={this.props.click}>
           I'm {this.props.name} and I am {this.props.age} years old!
         </p>

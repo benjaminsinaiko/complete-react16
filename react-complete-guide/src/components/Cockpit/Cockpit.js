@@ -33,6 +33,7 @@ const cockpit = props => {
       <button style={style} onClick={props.clicked}>
         Toggle Names
       </button>
+      <button onClick={props.login}>Log in</button>
     </Aux>
   );
 };
