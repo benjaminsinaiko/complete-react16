@@ -1,4 +1,6 @@
 import React from 'react';
+
+import Aux from '../../hoc/Aux';
 import './Cockpit.css';
 
 const cockpit = props => {
@@ -25,13 +27,13 @@ const cockpit = props => {
   }
 
   return (
-    <div className="cockpit">
+    <Aux>
       <h1>Hi, I'm a React App</h1>
       <p className={classes.join(' ')}>This is really working</p>
       <button style={style} onClick={props.clicked}>
         Toggle Names
       </button>
-    </div>
+    </Aux>
   );
 };
 

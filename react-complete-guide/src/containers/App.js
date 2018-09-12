@@ -5,6 +5,15 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[UPDATE App.js] Inside shouldUpdateComponent()', nextProps);
+    return true;
+  }
+
   state = {
     persons: [
       { id: 1, name: 'Max', age: 28 },
@@ -62,6 +71,13 @@ class App extends Component {
 
     return (
       <div className="App">
+        <button
+          onClick={() => {
+            this.setState({ showPersons: true });
+          }}
+        >
+          Show Persons
+        </button>
         <Cockpit
           showPersons={this.state.showPersons}
           persons={this.state.persons}
