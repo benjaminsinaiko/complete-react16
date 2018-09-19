@@ -10,20 +10,16 @@ class FullPost extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.id && this.props.id !== prevProps.id) {
-      axios
-        .get(`https://jsonplaceholder.typicode.com/posts/${this.props.id}`)
-        .then(response => {
-          this.setState({ loadedPost: response.data });
-        });
+      axios.get(`/posts/${this.props.id}`).then(response => {
+        this.setState({ loadedPost: response.data });
+      });
     }
   }
 
   deletePostHandler = () => {
-    axios
-      .delete(`https://jsonplaceholder.typicode.com/posts/${this.props.id}`)
-      .then(response => {
-        console.log(response);
-      });
+    axios.delete(`/posts/${this.props.id}`).then(response => {
+      console.log(response);
+    });
   };
 
   render() {
