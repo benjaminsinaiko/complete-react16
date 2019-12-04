@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
@@ -7,24 +7,11 @@ import Search from './Search';
 function Ingredients() {
   const [ingredients, setIngredients] = useState([]);
 
-  useEffect(() => {
-    fetch(process.env.REACT_APP_DB_URL)
-      .then(response => response.json())
-      .then(responseData => {
-        const loadedIngredients = [];
-        for (const key in responseData) {
-          loadedIngredients.push({
-            id: key,
-            title: responseData[key].title,
-            amount: responseData[key].amount
-          });
-        }
-        setIngredients(loadedIngredients);
-      });
+  const filteredIngredientsHandler = useCallback(filteredIngredients => {
+    setIngredients(filteredIngredients);
   }, []);
 
   const addIngredientHandler = ingredient => {
-    console.log('env', process.env.REACT_APP_DB_URL);
     fetch(process.env.REACT_APP_DB_URL, {
       method: 'POST',
       body: JSON.stringify(ingredient),
@@ -53,7 +40,7 @@ function Ingredients() {
       <IngredientForm onAddIngredient={addIngredientHandler} />
 
       <section>
-        <Search />
+        <Search onLoadIngredients={filteredIngredientsHandler} />
         <IngredientList ingredients={ingredients} onRemoveItem={removeIngredientHandler} />
       </section>
     </div>
