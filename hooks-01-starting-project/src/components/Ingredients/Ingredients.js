@@ -12,7 +12,7 @@ function Ingredients() {
   }, []);
 
   const addIngredientHandler = ingredient => {
-    fetch(process.env.REACT_APP_DB_URL, {
+    fetch(process.env.REACT_APP_DB_URL + '.json', {
       method: 'POST',
       body: JSON.stringify(ingredient),
       headers: { 'Content-Type': 'application/json' }
@@ -29,9 +29,14 @@ function Ingredients() {
   };
 
   const removeIngredientHandler = ingredientID => {
-    setIngredients(prevIngredients => {
-      const newIngredients = prevIngredients.filter(ig => ig.id !== ingredientID);
-      return [...newIngredients];
+    fetch(`${process.env.REACT_APP_DB_URL}/${ingredientID}.json`, {
+      method: 'DELETE'
+    }).then(response => {
+      console.log('response', response);
+      setIngredients(prevIngredients => {
+        const newIngredients = prevIngredients.filter(ig => ig.id !== ingredientID);
+        return [...newIngredients];
+      });
     });
   };
 

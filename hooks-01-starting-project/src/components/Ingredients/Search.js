@@ -13,7 +13,7 @@ const Search = React.memo(props => {
       if (enteredFilter === inputRef.current.value) {
         const query =
           enteredFilter.length === 0 ? '' : `?orderBy="title"&equalTo="${enteredFilter}"`;
-        fetch(process.env.REACT_APP_DB_URL + query)
+        fetch(process.env.REACT_APP_DB_URL + '.json' + query)
           .then(response => response.json())
           .then(responseData => {
             const loadedIngredients = Object.entries(responseData).map(([key, value]) => ({
