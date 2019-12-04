@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback } from 'react';
+import React, { useReducer, useCallback, useMemo } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
@@ -41,7 +41,7 @@ function Ingredients() {
     dispatch({ type: 'SET', ingredients: filteredIngredients });
   }, []);
 
-  const addIngredientHandler = ingredient => {
+  const addIngredientHandler = useCallback(ingredient => {
     dispatchHttp({ type: 'SEND' });
     fetch(process.env.REACT_APP_DB_URL + '.json', {
       method: 'POST',
@@ -55,9 +55,9 @@ function Ingredients() {
       .then(responseData => {
         dispatch({ type: 'ADD', ingredient: { id: responseData.name, ...ingredient } });
       });
-  };
+  }, []);
 
-  const removeIngredientHandler = ingredientID => {
+  const removeIngredientHandler = useCallback(ingredientID => {
     dispatchHttp({ type: 'SEND' });
     fetch(`${process.env.REACT_APP_DB_URL}/${ingredientID}.json`, {
       method: 'DELETE'
@@ -69,11 +69,15 @@ function Ingredients() {
       .catch(error => {
         dispatchHttp({ type: 'ERROR', errorMessage: 'Something went wrong!' });
       });
-  };
+  }, []);
 
-  const clearError = () => {
+  const clearError = useCallback(() => {
     dispatchHttp({ type: 'CLEAR_ERROR' });
-  };
+  }, []);
+
+  const ingredientList = useMemo(() => {
+    return <IngredientList ingredients={ingredients} onRemoveItem={removeIngredientHandler} />;
+  }, [ingredients, removeIngredientHandler]);
 
   return (
     <div className='App'>
@@ -83,7 +87,7 @@ function Ingredients() {
 
       <section>
         <Search onLoadIngredients={filteredIngredientsHandler} />
-        <IngredientList ingredients={ingredients} onRemoveItem={removeIngredientHandler} />
+        {ingredientList}
       </section>
     </div>
   );

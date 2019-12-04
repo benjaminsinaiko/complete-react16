@@ -3,8 +3,9 @@ import React from 'react';
 import './IngredientList.css';
 
 const IngredientList = props => {
+  console.log('RENDER LIST');
   return (
-    <section className="ingredient-list">
+    <section className='ingredient-list'>
       <h2>Loaded Ingredients</h2>
       <ul>
         {props.ingredients.map(ig => (
