@@ -1,17 +1,32 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useReducer, useCallback } from 'react';
 
 import IngredientForm from './IngredientForm';
 import IngredientList from './IngredientList';
 import ErrorModal from '../UI/ErrorModal';
 import Search from './Search';
 
+const ingredientReducer = (currentIngredients, action) => {
+  switch (action.type) {
+    case 'SET':
+      return action.ingredients;
+    case 'ADD':
+      return [...currentIngredients, action.ingredient];
+    case 'DELETE':
+      return currentIngredients.filter(ing => ing.id !== action.id);
+    default:
+      throw new Error('Should not get there!');
+  }
+};
+
 function Ingredients() {
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, dispatch] = useReducer(ingredientReducer, []);
+  // const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
   const filteredIngredientsHandler = useCallback(filteredIngredients => {
-    setIngredients(filteredIngredients);
+    // setIngredients(filteredIngredients);
+    dispatch({ type: 'SET', ingredients: filteredIngredients });
   }, []);
 
   const addIngredientHandler = ingredient => {
@@ -26,10 +41,11 @@ function Ingredients() {
         return response.json();
       })
       .then(responseData => {
-        setIngredients(prevIngredients => [
-          ...prevIngredients,
-          { id: responseData.name, ...ingredient }
-        ]);
+        // setIngredients(prevIngredients => [
+        //   ...prevIngredients,
+        //   { id: responseData.name, ...ingredient }
+        // ]);
+        dispatch({ type: 'ADD', ingredient: { id: responseData.name, ...ingredient } });
       });
   };
 
@@ -40,10 +56,11 @@ function Ingredients() {
     })
       .then(response => {
         setIsLoading(false);
-        setIngredients(prevIngredients => {
-          const newIngredients = prevIngredients.filter(ig => ig.id !== ingredientID);
-          return [...newIngredients];
-        });
+        // setIngredients(prevIngredients => {
+        //   const newIngredients = prevIngredients.filter(ig => ig.id !== ingredientID);
+        //   return [...newIngredients];
+        // });
+        dispatch({ type: 'DELETE', id: ingredientID });
       })
       .catch(error => {
         setIsLoading(false);
